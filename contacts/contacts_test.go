@@ -63,9 +63,8 @@ func TestGetAllContacts(t *testing.T) {
 	expectationArr2 := [5]string{"f2", "l2", "d2", "p2", "e2"}
 	allEmployees := csvutils.GetAllContacts("employees_test.csv")
 
-	// Index 1 & 2 because 0 is title
-	emp1 := allEmployees[1]
-	emp2 := allEmployees[2]
+	emp1 := allEmployees[0]
+	emp2 := allEmployees[1]
 
 	if emp1.FirstName != expectationArr1[0] {
 		t.Fail()
@@ -118,12 +117,27 @@ func TestAddEmployeeToCsv(t *testing.T) {
 func TestAddStruct(t *testing.T) {
 	allContacts := csvutils.GetAllContacts("employees_test.csv")
 
-	if len(allContacts) != 3 {
+	if len(allContacts) != 2 {
 		t.Fail()
 	}
 
 	allContacts = addStruct(allContacts, "f3", "l3", "d3", "pn3", "em3")
-	if len(allContacts) != 4 {
+	if len(allContacts) != 3 {
+		t.Fail()
+	}
+}
+
+func TestStringContains(t *testing.T) {
+
+	//True
+	firstTest := stringContains("Foobar", "foo")
+	//False
+	secondTest := stringContains("Foobar", "123")
+
+	if firstTest != true {
+		t.Fail()
+	}
+	if secondTest != false {
 		t.Fail()
 	}
 }

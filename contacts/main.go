@@ -19,13 +19,18 @@ func getInput(request string) string {
 }
 
 // Print all stored employees on terminal
-func printEmployees(allContacts []employees.Employee) {
+func printAllEmployees(allContacts []employees.Employee) {
 	for _, emp := range allContacts {
-		fmt.Println("\n" + emp.FirstName + " " + emp.LastName)
-		fmt.Println(emp.Department)
-		fmt.Println(emp.PhoneNumber)
-		fmt.Println(emp.Email)
+		printEmployee(emp)
 	}
+}
+
+// Print selected employee
+func printEmployee(emp employees.Employee) {
+	fmt.Println("\n" + emp.FirstName + " " + emp.LastName)
+	fmt.Println(emp.Department)
+	fmt.Println(emp.PhoneNumber)
+	fmt.Println(emp.Email)
 }
 
 // Creates a new struct and appends it to slice
@@ -54,6 +59,39 @@ func addEmployee(allContacts []employees.Employee) []employees.Employee {
 	return allContacts
 }
 
+// Checks if first string contains second string
+func stringContains(first, second string) bool {
+	if strings.Contains(strings.ToUpper(first), strings.ToUpper(second)) {
+		return true
+	} else {
+		return false
+	}
+}
+
+// Prints all employees where user input matches any struct value
+func searchForEmployee(allContacts []employees.Employee) {
+
+	// Counter to keep track on hits
+	counter := 0
+
+	searchWord := getInput("Enter search word: ")
+	for _, emp := range allContacts {
+		empAttributes := [5]string{emp.FirstName, emp.LastName, emp.Department, emp.PhoneNumber, emp.Email}
+		for _, attribute := range empAttributes {
+			if stringContains(attribute, searchWord) {
+				printEmployee(emp)
+				counter += 1
+				break
+			}
+		}
+	}
+	if counter == 0 {
+		fmt.Println("\nSorry, no matches on \"" + searchWord + "\".")
+	} else {
+		fmt.Println("\n", counter, " matches on \""+searchWord+"\".")
+	}
+}
+
 // Lets user choose from menu
 func menu(allContacts []employees.Employee) {
 	activeLoop := true
@@ -69,9 +107,9 @@ func menu(allContacts []employees.Employee) {
 		case "1":
 			allContacts = addEmployee(allContacts)
 		case "2":
-			printEmployees(allContacts)
+			printAllEmployees(allContacts)
 		case "3":
-			// Search for employee
+			searchForEmployee(allContacts)
 		case "4":
 			fmt.Println("Good bye.")
 			activeLoop = false
