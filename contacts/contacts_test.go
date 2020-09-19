@@ -3,6 +3,7 @@ package main
 import (
 	"testing"
 
+	"github.com/fashgubben/LearningGolang/contacts/csvutils"
 	"github.com/fashgubben/LearningGolang/contacts/employees"
 )
 
@@ -60,7 +61,7 @@ func TestGetAllContacts(t *testing.T) {
 
 	expectationArr1 := [5]string{"f1", "l1", "d1", "p1", "e1"}
 	expectationArr2 := [5]string{"f2", "l2", "d2", "p2", "e2"}
-	allEmployees := getAllContacts("employees_test.csv")
+	allEmployees := csvutils.GetAllContacts("employees_test.csv")
 
 	// Index 1 & 2 because 0 is title
 	emp1 := allEmployees[1]
@@ -91,8 +92,31 @@ func TestGetAllContacts(t *testing.T) {
 	}
 }
 
+func TestAddEmployeeToCsv(t *testing.T) {
+
+	// Keepng an original slice to restore csv-file at end
+	originalEployees := csvutils.GetAllContacts("employees_test.csv")
+
+	// Append a new employee to slice
+	testEmployees := csvutils.GetAllContacts("employees_test.csv")
+	testEmployees = addStruct(testEmployees, "f3", "l3", "d3", "pn3", "em3")
+
+	// Run the function we're testing
+	csvutils.AddEmployeeToCsv(testEmployees, "employees_test.csv")
+
+	// Check if contact was written to file
+	resultEmployees := csvutils.GetAllContacts("employees_test.csv")
+	lastEmployee := resultEmployees[len(resultEmployees)-1]
+	if lastEmployee.FirstName != "f3" {
+		t.Fail()
+	}
+	// Restore csv file
+	csvutils.AddEmployeeToCsv(originalEployees, "employees_test.csv")
+
+}
+
 func TestAddStruct(t *testing.T) {
-	allContacts := getAllContacts("employees_test.csv")
+	allContacts := csvutils.GetAllContacts("employees_test.csv")
 
 	if len(allContacts) != 3 {
 		t.Fail()

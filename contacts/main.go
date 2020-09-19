@@ -2,11 +2,11 @@ package main
 
 import (
 	"bufio"
-	"encoding/csv"
 	"fmt"
 	"os"
 	"strings"
 
+	"github.com/fashgubben/LearningGolang/contacts/csvutils"
 	"github.com/fashgubben/LearningGolang/contacts/employees"
 )
 
@@ -18,35 +18,9 @@ func getInput(request string) string {
 	return strings.TrimSpace(usrInput)
 }
 
-// Reads from csv-file and stores all employees in slice
-func getAllContacts(file string) []employees.Employee {
-	csvFile, err := os.Open(file)
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer csvFile.Close()
-
-	csvLines, err := csv.NewReader(csvFile).ReadAll()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	allContacts := []employees.Employee{}
-	for _, line := range csvLines {
-
-		emp := employees.CreateEmployee(line[0], line[1], line[2], line[3], line[4])
-		allContacts = append(allContacts, emp)
-	}
-	return allContacts
-}
-
-// Print all stored employees
+// Print all stored employees on terminal
 func printEmployees(allContacts []employees.Employee) {
-	for i, emp := range allContacts {
-		// Ignore csv titles
-		if i == 0 {
-			continue
-		}
+	for _, emp := range allContacts {
 		fmt.Println("\n" + emp.FirstName + " " + emp.LastName)
 		fmt.Println(emp.Department)
 		fmt.Println(emp.PhoneNumber)
@@ -54,6 +28,7 @@ func printEmployees(allContacts []employees.Employee) {
 	}
 }
 
+// Creates a new struct and appends it to slice
 func addStruct(allContacts []employees.Employee, fn, ln, d, pn, em string) []employees.Employee {
 	emp := employees.CreateEmployee(fn, ln, d, pn, em)
 	allContacts = append(allContacts, emp)
@@ -74,6 +49,7 @@ func addEmployee(allContacts []employees.Employee) []employees.Employee {
 	allContacts = addStruct(allContacts, fn, ln, d, pn, em)
 
 	// TODO: Add row to csv
+	csvutils.AddEmployeeToCsv(allContacts, "employees.csv")
 
 	return allContacts
 }
@@ -106,6 +82,6 @@ func menu(allContacts []employees.Employee) {
 }
 
 func main() {
-	allContacts := getAllContacts("employees.csv")
+	allContacts := csvutils.GetAllContacts("employees.csv")
 	menu(allContacts)
 }
