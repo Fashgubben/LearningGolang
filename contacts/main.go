@@ -5,32 +5,22 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"strings"
+
+	"github.com/fashgubben/LearningGolang/contacts/employees"
 )
 
-// Define Employee struct
-type Employee struct {
-	firstName   string
-	lastName    string
-	department  string
-	phoneNumber string
-	email       string
-}
-
-// Confirmation method (value reciever)
-func (e Employee) saveConfirm() string {
-	return "Employee " + e.firstName + " " + e.lastName + " is now saved."
-}
-
-// Set new phone number method (pointer reciever)
-func (e *Employee) changePhone(newNumber string) {
-	e.phoneNumber = newNumber
-	fmt.Println("New phone number set.")
+// Requests specific input from user
+func getInput(request string) string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("\n" + request)
+	usrInput, _ := reader.ReadString('\n')
+	return strings.TrimSpace(usrInput)
 }
 
 // Reads from csv-file and stores all employees in slice
-func getStoredContacts() []Employee {
-
-	csvFile, err := os.Open("employees.csv")
+func getAllContacts(file string) []employees.Employee {
+	csvFile, err := os.Open(file)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -41,59 +31,81 @@ func getStoredContacts() []Employee {
 		fmt.Println(err)
 	}
 
-	allContacts := []Employee{}
-
+	allContacts := []employees.Employee{}
 	for _, line := range csvLines {
-		employee := Employee{
-			firstName:   line[0],
-			lastName:    line[1],
-			department:  line[2],
-			phoneNumber: line[3],
-			email:       line[4],
-		}
-		allContacts = append(allContacts, employee)
+
+		emp := employees.CreateEmployee(line[0], line[1], line[2], line[3], line[4])
+		allContacts = append(allContacts, emp)
 	}
+	return allContacts
+}
+
+// Print all stored employees
+func printEmployees(allContacts []employees.Employee) {
+	for i, emp := range allContacts {
+		// Ignore csv titles
+		if i == 0 {
+			continue
+		}
+		fmt.Println("\n" + emp.FirstName + " " + emp.LastName)
+		fmt.Println(emp.Department)
+		fmt.Println(emp.PhoneNumber)
+		fmt.Println(emp.Email)
+	}
+}
+
+func addStruct(allContacts []employees.Employee, fn, ln, d, pn, em string) []employees.Employee {
+	emp := employees.CreateEmployee(fn, ln, d, pn, em)
+	allContacts = append(allContacts, emp)
+	return allContacts
+}
+
+// Add new employee
+func addEmployee(allContacts []employees.Employee) []employees.Employee {
+
+	// Request
+	fn := getInput("Enter first name:")
+	ln := getInput("Enter last name:")
+	d := getInput("Enter department:")
+	pn := getInput("Enter phone number:")
+	em := getInput("Enter e-mail:")
+
+	// Add struct to list
+	allContacts = addStruct(allContacts, fn, ln, d, pn, em)
+
+	// TODO: Add row to csv
 
 	return allContacts
 }
 
 // Lets user choose from menu
-func menu() {
-
+func menu(allContacts []employees.Employee) {
 	activeLoop := true
 	for activeLoop == true {
-
-		fmt.Println("Employee catalouge")
+		fmt.Println("\nEmployee catalouge")
 		fmt.Println("\n[1] - Add new employee")
-		fmt.Println("[2] - Print all info")
+		fmt.Println("[2] - Print all employees")
 		fmt.Println("[3] - Search for employee")
 		fmt.Println("[4] - Exit")
 
-		reader := bufio.NewReader(os.Stdin)
-		fmt.Println("\nEnter a menu number: ")
-		usrInput, _ := reader.ReadString('\n')
-
-		switch usrInput {
+		menuChoice := getInput("Enter a menu number:")
+		switch menuChoice {
 		case "1":
-			// Add new employee
+			allContacts = addEmployee(allContacts)
 		case "2":
-			// Print all info
+			printEmployees(allContacts)
 		case "3":
 			// Search for employee
 		case "4":
-			// Exit
 			fmt.Println("Good bye.")
 			activeLoop = false
 		default:
 			fmt.Println("\nPlease enter a valid number.")
-
 		}
-
 	}
 }
 
 func main() {
-
-	menu()
-
+	allContacts := getAllContacts("employees.csv")
+	menu(allContacts)
 }
