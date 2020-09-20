@@ -22,6 +22,18 @@ func CreateEmployee(firstName, lastName, department, phoneNumber, email string) 
 	}
 }
 
+// Set new firstName method (pointer reciever)
+func (emp *Employee) ChangeFirstName(newName string) {
+	emp.FirstName = newName
+	fmt.Println("New first name set.")
+}
+
+// Set new lastName method (pointer reciever)
+func (emp *Employee) ChangeLastName(newName string) {
+	emp.LastName = newName
+	fmt.Println("New last name set.")
+}
+
 // Set new department method (pointer reciever)
 func (emp *Employee) ChangeDepartment(newDepartment string) {
 	emp.Department = newDepartment
