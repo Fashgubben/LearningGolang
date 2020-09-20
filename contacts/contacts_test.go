@@ -57,14 +57,14 @@ func TestChangeEmail(t *testing.T) {
 	}
 }
 
-func TestGetAllContacts(t *testing.T) {
+func TestGetallEmployeesSlice(t *testing.T) {
 
 	expectationArr1 := [5]string{"f1", "l1", "d1", "p1", "e1"}
 	expectationArr2 := [5]string{"f2", "l2", "d2", "p2", "e2"}
-	allEmployees := csvutils.GetAllContacts("employees_test.csv")
+	allEmployeesSlice := csvutils.GetallEmployeesSlice("employees_test.csv")
 
-	emp1 := allEmployees[0]
-	emp2 := allEmployees[1]
+	emp1 := allEmployeesSlice[0]
+	emp2 := allEmployeesSlice[1]
 
 	if emp1.FirstName != expectationArr1[0] {
 		t.Fail()
@@ -94,17 +94,17 @@ func TestGetAllContacts(t *testing.T) {
 func TestAddEmployeeToCsv(t *testing.T) {
 
 	// Keepng an original slice to restore csv-file at end
-	originalEployees := csvutils.GetAllContacts("employees_test.csv")
+	originalEployees := csvutils.GetallEmployeesSlice("employees_test.csv")
 
 	// Append a new employee to slice
-	testEmployees := csvutils.GetAllContacts("employees_test.csv")
+	testEmployees := csvutils.GetallEmployeesSlice("employees_test.csv")
 	testEmployees = addStruct(testEmployees, "f3", "l3", "d3", "pn3", "em3")
 
 	// Run the function we're testing
 	csvutils.AddEmployeeToCsv(testEmployees, "employees_test.csv")
 
 	// Check if contact was written to file
-	resultEmployees := csvutils.GetAllContacts("employees_test.csv")
+	resultEmployees := csvutils.GetallEmployeesSlice("employees_test.csv")
 	lastEmployee := resultEmployees[len(resultEmployees)-1]
 	if lastEmployee.FirstName != "f3" {
 		t.Fail()
@@ -115,14 +115,14 @@ func TestAddEmployeeToCsv(t *testing.T) {
 }
 
 func TestAddStruct(t *testing.T) {
-	allContacts := csvutils.GetAllContacts("employees_test.csv")
+	allEmployeesSlice := csvutils.GetallEmployeesSlice("employees_test.csv")
 
-	if len(allContacts) != 2 {
+	if len(allEmployeesSlice) != 2 {
 		t.Fail()
 	}
 
-	allContacts = addStruct(allContacts, "f3", "l3", "d3", "pn3", "em3")
-	if len(allContacts) != 3 {
+	allEmployeesSlice = addStruct(allEmployeesSlice, "f3", "l3", "d3", "pn3", "em3")
+	if len(allEmployeesSlice) != 3 {
 		t.Fail()
 	}
 }

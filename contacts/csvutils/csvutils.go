@@ -9,7 +9,7 @@ import (
 )
 
 // Reads from csv-file and stores all employees in slice
-func GetAllContacts(file string) []employees.Employee {
+func GetallEmployeesSlice(file string) []employees.Employee {
 	csvFile, err := os.Open(file)
 	if err != nil {
 		fmt.Println(err)
@@ -21,17 +21,17 @@ func GetAllContacts(file string) []employees.Employee {
 		fmt.Println(err)
 	}
 
-	allContacts := []employees.Employee{}
+	allEmployeesSlice := []employees.Employee{}
 	for _, line := range csvLines {
 
 		emp := employees.CreateEmployee(line[0], line[1], line[2], line[3], line[4])
-		allContacts = append(allContacts, emp)
+		allEmployeesSlice = append(allEmployeesSlice, emp)
 	}
-	return allContacts
+	return allEmployeesSlice
 }
 
 // Writes row to csv-file
-func AddEmployeeToCsv(allContacts []employees.Employee, file string) {
+func AddEmployeeToCsv(allEmployeesSlice []employees.Employee, file string) {
 
 	csvFile, err := os.Create(file)
 	if err != nil {
@@ -42,7 +42,7 @@ func AddEmployeeToCsv(allContacts []employees.Employee, file string) {
 	writer := csv.NewWriter(csvFile)
 	defer writer.Flush()
 
-	for _, emp := range allContacts {
+	for _, emp := range allEmployeesSlice {
 
 		empSlice := []string{emp.FirstName, emp.LastName, emp.Department, emp.PhoneNumber, emp.Email}
 		err := writer.Write(empSlice)
