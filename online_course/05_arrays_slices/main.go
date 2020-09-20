@@ -30,5 +30,4 @@ func main() {
 	colorSlice := []string{"Green", "White", "Orange"}
 	fmt.Println(colorSlice)
 	fmt.Println(len(colorSlice))
-
 }

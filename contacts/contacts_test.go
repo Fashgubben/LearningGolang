@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strconv"
 	"testing"
 
 	"github.com/fashgubben/LearningGolang/contacts/csvutils"
@@ -138,6 +139,88 @@ func TestStringContains(t *testing.T) {
 		t.Fail()
 	}
 	if secondTest != false {
+		t.Fail()
+	}
+}
+
+func TestLoopThroughEmps(t *testing.T) {
+	testEmployee := employees.CreateEmployee("a", "b", "c", "d", "e")
+	counter := 0
+
+	counter = loopThroughEmps("123", testEmployee, counter)
+	if counter != 0 {
+		t.Fail()
+	}
+
+	counter = loopThroughEmps("a", testEmployee, counter)
+	if counter != 1 {
+		t.Fail()
+	}
+}
+
+func TestReturnMatchMessage(t *testing.T) {
+	searchWord := "test"
+
+	// Test 1
+	intCounter := 0
+	expectedResult1 := "\nSorry, no matches on \"" + searchWord + "\"."
+	actualResult1 := returnMatchMessage(intCounter, searchWord)
+	if actualResult1 != expectedResult1 {
+		t.Fail()
+	}
+
+	// Test 2
+	intCounter = 3
+	strCounter := strconv.Itoa(intCounter)
+	expectedResult2 := "\n" + strCounter + " matches on \"" + searchWord + "\"."
+	actualResult2 := returnMatchMessage(intCounter, searchWord)
+	if actualResult2 != expectedResult2 {
+		t.Fail()
+	}
+}
+
+func TestAddEmployee(t *testing.T) {
+	allEmployeesSlice := csvutils.GetallEmployeesSlice("employees_test.csv")
+	newEmployee := []string{"f3", "l3", "d3", "pn3", "em3"}
+	allEmployeesSlice = addEmployee(allEmployeesSlice, newEmployee)
+	lastAddedEmployee := allEmployeesSlice[len(allEmployeesSlice)-1]
+	if lastAddedEmployee.FirstName != "f3" {
+		t.Fail()
+	}
+}
+
+func TestPrintMenu(t *testing.T) {
+	expectedResult := "\nEmployee catalouge\n" +
+		"\n[1] - Add new employee\n" +
+		"[2] - Print all employees\n" +
+		"[3] - Search for employee\n" +
+		"[4] - Edit employee info\n" +
+		"[5] - Exit"
+	actualResult := printMenu()
+	if expectedResult != actualResult {
+		t.Fail()
+	}
+}
+
+func TestSearchForEmployee(t *testing.T) {
+
+	allEmployeesSlice := csvutils.GetallEmployeesSlice("employees_test.csv")
+
+	// Test1
+	searchWord := "test"
+	expectedResult := "\nSorry, no matches on \"" + searchWord + "\"."
+	actualResult := searchForEmployee(allEmployeesSlice, searchWord)
+	if expectedResult != actualResult {
+		t.Fail()
+	}
+
+	// Test 2
+	intCounter := 1
+	strCounter := strconv.Itoa(intCounter)
+	searchWord = "f1"
+	expectedResult = "\n" + strCounter + " matches on \"" + searchWord + "\"."
+	actualResult = searchForEmployee(allEmployeesSlice, searchWord)
+	if expectedResult != actualResult {
 		t.Fail()
 	}
 }

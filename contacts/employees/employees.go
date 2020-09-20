@@ -39,3 +39,11 @@ func (emp *Employee) ChangeEmail(newEmail string) {
 	emp.Email = newEmail
 	fmt.Println("New e-mail set.")
 }
+
+// Print selected employee (value reciever)
+func (emp Employee) PrintEmployee() {
+	fmt.Println("\n" + emp.FirstName + " " + emp.LastName)
+	fmt.Println(emp.Department)
+	fmt.Println(emp.PhoneNumber)
+	fmt.Println(emp.Email)
+}
