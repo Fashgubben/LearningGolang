@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fashgubben/LearningGolang/contacts/employees"
+	"github.com/fashgubben/LearningGolang/ContactBook/employees"
 )
 
 // Reads from csv-file and stores all employees in slice

@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/fashgubben/LearningGolang/contacts/csvutils"
-	"github.com/fashgubben/LearningGolang/contacts/employees"
+	"github.com/fashgubben/LearningGolang/ContactBook/csvutils"
+	"github.com/fashgubben/LearningGolang/ContactBook/employees"
 )
 
 // TESTING EMPLOYEE PACKAGE

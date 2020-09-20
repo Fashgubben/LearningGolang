@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/fashgubben/LearningGolang/contacts/csvutils"
-	"github.com/fashgubben/LearningGolang/contacts/employees"
+	"github.com/fashgubben/LearningGolang/ContactBook/csvutils"
+	"github.com/fashgubben/LearningGolang/ContactBook/employees"
 )
 
 // Main menu of the application
