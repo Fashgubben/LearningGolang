@@ -16,7 +16,7 @@ func mainMenu(allEmployeesSlice []employees.Employee) {
 	activeLoop := true
 	for activeLoop == true {
 		fmt.Println(printMenu())
-		menuChoice := getInput("Enter a mainMenu number:")
+		menuChoice := getInput("Enter a menu number:")
 		switch menuChoice {
 		case "1": // Add new employee
 			newEmployeeSlice := getNewEmployeeInfo()
